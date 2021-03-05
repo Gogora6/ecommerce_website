@@ -1,4 +1,5 @@
-from rest_framework import status
+from rest_framework import status, generics, permissions
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
@@ -7,7 +8,8 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import logout
 
 from .models import User
-from .serializers import UserRegisterSerializer
+from .permissions import IsUser
+from .serializers import UserRegisterSerializer, UserSerializer
 
 
 class RegistrationAPIView(APIView):
@@ -42,3 +44,10 @@ def user_logout(request):
     logout(request)
     data = {'success': 'Successfully logged out'}
     return Response(data=data, status=status.HTTP_200_OK)
+
+
+class UserDetail(generics.RetrieveAPIView):
+    serializer_class = UserSerializer
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = User.objects.all()

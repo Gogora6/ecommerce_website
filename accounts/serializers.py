@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import User
-from django.utils.translation import gettext_lazy as _
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -25,11 +24,13 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         return user
 
 
-class UserLoginSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
+            'first_name',
+            'last_name',
             'email',
-            'password'
+            'gender',
+            'phone_number',
         )
-
