@@ -120,6 +120,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+MEDIA_ROOT = 'media'
+MEDIA_URL = '/media/'
+
 AUTH_USER_MODEL = 'accounts.User'
 
 REST_FRAMEWORK = {
