@@ -5,6 +5,7 @@ from .models import User
 class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(required=True, style={'input_type': 'password'})
 
+    # @todo password2
     class Meta:
         model = User
         fields = (
