@@ -22,7 +22,7 @@ class RegistrationAPIView(generics.CreateAPIView):
         with transaction.atomic():
             user = serializer.save()
             token = Token.objects.create(user=user)
-            data['Token'] = token
+            data['Token'] = token.key
         return Response(data, status=status.HTTP_200_OK)
 
 
