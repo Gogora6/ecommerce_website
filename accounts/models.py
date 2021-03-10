@@ -27,3 +27,17 @@ class User(AbstractUser):
     class Meta:
         verbose_name = _('User')
         verbose_name_plural = _('User')
+
+
+class AddressToUser(models.Model):
+    user = models.ForeignKey(
+        to='accounts.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='AddressToUser'
+    )
+
+    address = models.CharField(max_length=255, verbose_name=_('Address'))
+
+    def __str__(self):
+        return self.address
