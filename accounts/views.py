@@ -8,8 +8,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db import transaction
 
-from .models import User
 from .serializers import UserRegisterSerializer, UserSerializer
+from .models import User
 
 
 class RegistrationAPIView(generics.CreateAPIView):

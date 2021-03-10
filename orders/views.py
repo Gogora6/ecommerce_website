@@ -19,6 +19,7 @@ class OrderViewSets(ModelViewSet):
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
     queryset = Order.objects.all()
+    default_serializer_class = OrderSerializer
 
     serializer_by_action = {
         'list': OrderSerializer,
@@ -38,4 +39,4 @@ class OrderViewSets(ModelViewSet):
         serializer.save(user=self.request.user, price=sum_price)
 
     def get_serializer_class(self):
-        return self.serializer_by_action.get(getattr(self, 'action', None), self.serializer_class)
+        return self.serializer_by_action.get(getattr(self, 'action', None), self.default_serializer_class)
