@@ -7,7 +7,6 @@ class TagsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = (
-            'id',
             'name',
         )
 
@@ -22,20 +21,15 @@ class CategorySerializer(serializers.ModelSerializer):
         )
 
 
-class ProductSerializer(serializers.ModelSerializer):
+class CreateProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = (
-            'id',
-            'title',
-            'slug',
-            'brand',
-            'category',
-            'description',
-            'ingredients',
-            'UPC',
-            'SKU',
-            'image',
-            'price',
-            'stocks'
-        )
+        exclude = ('created_date', 'updated_at', 'slug')
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    tags = TagsSerializer(many=True)
+
+    class Meta:
+        model = Product
+        exclude = ('category',)
