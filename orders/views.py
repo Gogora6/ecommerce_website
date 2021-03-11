@@ -22,8 +22,6 @@ class OrderViewSets(ModelViewSet):
     default_serializer_class = OrderSerializer
 
     serializer_by_action = {
-        'list': OrderSerializer,
-        'retrieve': OrderSerializer,
         'create': OrderCreateSerializer,
         'update': OrderCreateSerializer
     }
