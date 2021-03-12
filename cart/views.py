@@ -20,7 +20,7 @@ class CartViewSets(ModelViewSet):
         cart_object = self.get_object()
         serializer = self.serializer_class(cart_object)
         total_price = serializer.data.get('total_cost', 0)
-        SLACK_WEBHOOK = 'https://hooks.slack.com/services/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'
+        SLACK_WEBHOOK = None
         response = requests.post(url=SLACK_WEBHOOK, json={'text': f'Lasha Gogorishvili | Total Price - {total_price}'})
         if response.status_code == 200:
             return Response({'message': 'Successfully sent.!'}, status=status.HTTP_200_OK)
