@@ -1,7 +1,10 @@
-from django.db.models import Sum
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
-from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.serializers import BaseSerializer
+from rest_framework.viewsets import ModelViewSet
+from django.db.models import Sum
+
+from typing import Type
 
 from .serializers import CouponSerializer, OrderSerializer, OrderCreateSerializer
 from .models import Coupon, Order
@@ -26,7 +29,7 @@ class OrderViewSets(ModelViewSet):
         'update': OrderCreateSerializer
     }
 
-    def perform_create(self, serializer):
+    def perform_create(self, serializer) -> None:
         products_ids = self.request.data.getlist('products')
         products_prices = Product.objects.filter(pk__in=products_ids)
         sum_price = products_prices.aggregate(Sum('price')).get('price__sum')
@@ -36,5 +39,5 @@ class OrderViewSets(ModelViewSet):
             sum_price = sum_price * coupon.discount / 100
         serializer.save(user=self.request.user, price=sum_price)
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> Type[BaseSerializer]:
         return self.serializer_by_action.get(getattr(self, 'action', None), self.default_serializer_class)

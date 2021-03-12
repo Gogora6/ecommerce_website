@@ -1,8 +1,4 @@
-from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
-from rest_framework.relations import PrimaryKeyRelatedField
-
-from products.models import Product
 from products.serializers import ProductSerializer
 from .models import Coupon, Order
 
