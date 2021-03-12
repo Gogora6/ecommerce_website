@@ -10,6 +10,7 @@ from django.db import transaction
 
 from .serializers import UserRegisterSerializer, UserSerializer
 from .models import User
+from cart.models import Cart
 
 
 class RegistrationAPIView(generics.CreateAPIView):
@@ -22,6 +23,7 @@ class RegistrationAPIView(generics.CreateAPIView):
         with transaction.atomic():
             user = serializer.save()
             token = Token.objects.create(user=user)
+            Cart.objects.create(owner=user)
             data['Token'] = token.key
         return Response(data, status=status.HTTP_200_OK)
 
