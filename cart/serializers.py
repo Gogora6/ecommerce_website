@@ -3,6 +3,7 @@ from rest_framework import serializers
 
 from .models import CartItem, Cart
 from django.db import models
+from products.serializers import ProductSerializer
 
 
 class DynamicFieldsModelSerializer(serializers.ModelSerializer):
@@ -22,6 +23,8 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
 
 
 class CartItemSerializer(DynamicFieldsModelSerializer):
+    product = ProductSerializer()
+
     class Meta:
         model = CartItem
         fields = ('product', 'quantity', 'active', 'cart')
