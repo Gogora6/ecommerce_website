@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_filters',
     'drf_yasg',
+    'debug_toolbar',
 
     # Custom apps
     'accounts.apps.AccountsConfig',
@@ -56,6 +57,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+
 ]
 
 ROOT_URLCONF = 'ecommerce_website.urls'
@@ -137,3 +141,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 
 }
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
