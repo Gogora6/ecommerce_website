@@ -1,3 +1,4 @@
+from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
 from django.utils.text import slugify
 from django.db import models
@@ -6,7 +7,7 @@ from django.db import models
 class Category(models.Model):
     # @TODO add a subcategory
     name = models.CharField(max_length=50, verbose_name=_('Category Name'))
-    slug = models.CharField(max_length=150, verbose_name=_('Category Slug'), unique=True, blank=True, null=True)
+    slug = models.SlugField(max_length=100, unique=True, blank=True, null=True)
     order = models.PositiveSmallIntegerField(verbose_name=_('Order'), blank=True, null=True)
 
     def save(self, *args, **kwargs):
@@ -22,9 +23,13 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    category = models.ForeignKey(
+        to='products.Category',
+        on_delete=models.PROTECT,
+        related_name='products'
+    )
     title = models.CharField(max_length=100, verbose_name=_('Product Title'))
-    slug = models.CharField(max_length=150, verbose_name=_('Product Slug'), unique=True)
-    category = models.ForeignKey(to='products.Category', on_delete=models.PROTECT, related_name='products')
+    slug = models.SlugField(max_length=100, unique=True, blank=True, null=True)
     tags = models.ManyToManyField(to='products.Tag', related_name='product')
     brand = models.CharField(max_length=50, verbose_name=_('Brand Name'))
     description = models.TextField(null=True, blank=True, verbose_name=_('Product Description'))

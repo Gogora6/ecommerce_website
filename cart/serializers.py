@@ -32,13 +32,7 @@ class CartItemSerializer(DynamicFieldsModelSerializer):
 
 class CartSerializer(serializers.ModelSerializer):
     items = CartItemSerializer(many=True)
-    total_cost = serializers.SerializerMethodField(method_name='get_total_cost')
 
     class Meta:
         model = Cart
-        fields = ('id', 'total_cost', 'items')
-
-    @staticmethod
-    def get_total_cost(obj):
-        return CartItem.objects.filter(cart_id=obj.id, active=True).aggregate(
-            cost=Sum(F('quantity') * F('product__price'), output_field=models.CharField()))['cost']
+        fields = ('id', 'items', 'total_cost')

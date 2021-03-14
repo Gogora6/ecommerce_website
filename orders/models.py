@@ -16,7 +16,10 @@ class Coupon(models.Model):
 
 
 class Order(models.Model):
-    products = models.ManyToManyField(to='products.Product', related_name='orders')
+    products = models.ManyToManyField(
+        to='products.Product',
+        related_name='orders'
+    )
     coupon = models.ForeignKey(
         to='orders.Coupon', related_name='orders',
         on_delete=models.PROTECT,
@@ -28,14 +31,14 @@ class Order(models.Model):
         null=True,
         related_name='order'
     )
-    total_product = models.CharField(max_length=500, default=0)
-    total_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("Price"))
     address = models.ForeignKey(
         to='accounts.AddressToUser',
         on_delete=models.PROTECT,
         null=True,
         related_name='order'
     )
+    total_product = models.CharField(max_length=500, default=0)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("Price"))
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

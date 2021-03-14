@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Sum, F
+from django.utils.functional import cached_property
 
 
 class Cart(models.Model):
@@ -9,6 +11,11 @@ class Cart(models.Model):
         related_name='cart'
     )
 
+    @cached_property
+    def total_cost(self):
+        return self.items.aggregate(
+            total_cost=Sum(F('quantity') * F('product__price'), output_field=models.CharField()))['total_cost']
+
 
 class CartItem(models.Model):
     product = models.ForeignKey(
@@ -16,10 +23,10 @@ class CartItem(models.Model):
         on_delete=models.CASCADE,
         related_name='CartItem'
     )
-    quantity = models.IntegerField()
-    active = models.BooleanField(default=True)
     cart = models.ForeignKey(
         to='cart.Cart',
         on_delete=models.CASCADE,
         related_name='items'
     )
+    quantity = models.IntegerField()
+    active = models.BooleanField(default=True)
