@@ -22,13 +22,13 @@ class TagViewSets(ModelViewSet):
 
 class CategoryViewSets(ModelViewSet):
     serializer_class = CategorySerializer
-    queryset = Category.objects.all().order_by('order')
+    queryset = Category.objects.all()
     lookup_field = 'slug'
 
 
 class ProductViewSets(ModelViewSet):
     default_serializer_class = ProductSerializer
-    queryset = Product.objects.filter(is_active=True)
+    queryset = Product.objects.filter(active=True)
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAdminOrReadOnly]
