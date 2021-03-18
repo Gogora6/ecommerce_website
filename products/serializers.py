@@ -39,15 +39,14 @@ class CreateProductSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         tags: dict = validated_data.pop('tags')
         with transaction.atomic():
-            instance: Product = super().create(**validated_data)
-            if type(tags) == dict and 'name' in tags.keys():
-                tags_list = []
-                for key in tags:
-                    name = key.pop('name')
+            instance: Product = super().create(validated_data)
+            tags_list = []
+            for tag_data in tags:
+                if type(tags) == dict:
+                    name = tag_data.get('name')
                     tags_list.append(Tag(name=name))
-
-                tags_objects = Tag.objects.bulk_create(tags_list)
-                instance.tags.set(tags_objects)
+                    tags_objects = Tag.objects.bulk_create(tags_list)
+                    instance.tags.set(tags_objects)
         return instance
 
 

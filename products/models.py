@@ -29,9 +29,12 @@ class Product(models.Model):
         on_delete=models.PROTECT,
         related_name='products'
     )
+    tags = models.ManyToManyField(
+        to='products.Tag',
+        related_name='product'
+    )
     title = models.CharField(max_length=100, verbose_name=_('Product Title'))
     slug = models.SlugField(max_length=100, unique=True, blank=True, null=True)
-    tags = models.ManyToManyField(to='products.Tag', related_name='product', null=True, blank=True)
     brand = models.CharField(max_length=50, verbose_name=_('Brand Name'))
     description = models.TextField(null=True, blank=True, verbose_name=_('Product Description'))
     ingredients = models.TextField(null=True, blank=True, verbose_name=_('Product Ingredients'))

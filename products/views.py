@@ -28,7 +28,7 @@ class CategoryViewSets(ModelViewSet):
 
 class ProductViewSets(ModelViewSet):
     default_serializer_class = ProductSerializer
-    queryset = Product.objects.filter(active=True)
+    queryset = Product.objects.filter(is_active=True)
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAdminOrReadOnly]
