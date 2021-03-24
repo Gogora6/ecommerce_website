@@ -1,13 +1,43 @@
 from django.http import HttpResponse
-from rest_framework import status
+from rest_framework import status, mixins
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 import requests
 
-from .serializers import CartSerializer
-from .models import Cart
+from .serializers import CartSerializer, OrderingSerializer, CartItemSerializer
+from .models import Cart, CartItem
 from .permissions import IsCartOwner
+
+
+class ReorderAPI(GenericViewSet):
+    """
+    request Data format:
+        [{id: X,  order: Y}, {id: X,  order: Y}, {id: X,  order: Y} ...]
+
+    """
+
+    @action(methods=('post',), detail=False)
+    def reorder(self, request):
+
+        serializer = OrderingSerializer(data=request.data, many=True)
+        serializer.is_valid(raise_exception=True)
+        # if not serializer.is_valid():
+        #     raise ValidationError(serializer.errors)
+        # items = [
+        #     self.queryset.model(
+        #         id=item['id'], order=item['order']
+        #     ) for order, item in enumerate(serializer.validated_data)
+        # ]
+        # self.queryset.model.objects.bulk_update(items, ['order'])
+        return Response(status=status.HTTP_202_ACCEPTED)
+
+
+class CartItemViewSets(ReorderAPI, ModelViewSet):
+    queryset = CartItem.objects.all()
+    serializer_class = CartItemSerializer
+    # permission_classes = [IsCartOwner]
 
 
 class CartViewSets(ModelViewSet):

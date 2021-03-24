@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Sum, F
 from django.utils.functional import cached_property
+from django.utils.translation import ugettext_lazy as _
 
 
 class Cart(models.Model):
@@ -29,4 +30,5 @@ class CartItem(models.Model):
         related_name='items'
     )
     quantity = models.IntegerField()
+    order = models.PositiveSmallIntegerField(verbose_name=_('Order'))
     active = models.BooleanField(default=True)

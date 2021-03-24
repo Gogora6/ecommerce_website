@@ -4,10 +4,9 @@ from rest_framework.authentication import TokenAuthentication, SessionAuthentica
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework import filters, status
 from typing import Type
-
 from .permissions import IsAdminOrReadOnly
 from .serializers import CategorySerializer, ProductSerializer, TagsSerializer, CreateProductSerializer
 from .models import Category, Product, Tag

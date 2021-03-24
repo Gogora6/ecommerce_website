@@ -1,9 +1,6 @@
-from django.db.models import Sum, F
 from rest_framework import serializers
 
 from .models import CartItem, Cart
-from django.db import models
-from products.serializers import ProductSerializer
 
 
 class DynamicFieldsModelSerializer(serializers.ModelSerializer):
@@ -23,11 +20,9 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
 
 
 class CartItemSerializer(DynamicFieldsModelSerializer):
-    product = ProductSerializer()
-
     class Meta:
         model = CartItem
-        fields = ('product', 'quantity', 'active', 'cart')
+        fields = ('product', 'quantity', 'active')
 
 
 class CartSerializer(serializers.ModelSerializer):
@@ -36,3 +31,9 @@ class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
         fields = ('id', 'items', 'total_cost')
+
+
+class OrderingSerializer(serializers.Serializer):
+    pk = serializers.ListSerializer()
+    pk = serializers.IntegerField(validators=[])
+
